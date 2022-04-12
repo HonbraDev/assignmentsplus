@@ -38,7 +38,7 @@ function useAssignmentList() {
           : undefined,
         returned: assignment.submissions![0].status === "returned",
         reassigned: assignment.submissions![0].status === "reassigned",
-        status: assignment.submissions![0].status,
+        status: assignment.submissions![0].status!,
       };
       if (Date.parse(assignment.dueDateTime!) < fourMonthsAgo) return;
       switch (assignment.submissions![0].status!) {
