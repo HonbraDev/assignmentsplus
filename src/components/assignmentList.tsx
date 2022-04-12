@@ -61,7 +61,7 @@ function AssignmentList({
                     <Chip
                       variant="outlined"
                       size="small"
-                      label="Late"
+                      label="Past due"
                       sx={{ marginTop: 0.5 }}
                     />
                   )}
