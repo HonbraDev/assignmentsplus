@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./utils/theme";
+import ThemeSwitcher from "./components/themeSwitcher";
+
+import { CssBaseline } from "@mui/material";
 import { EventType, PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./utils/authConfig";
 import { MsalProvider } from "@azure/msal-react";
@@ -28,10 +29,10 @@ msalInstance.addEventCallback((event) => {
 ReactDOM.render(
   <React.StrictMode>
     <MsalProvider instance={msalInstance}>
-      <ThemeProvider theme={theme}>
+      <ThemeSwitcher theme={theme}>
         <CssBaseline />
         <App />
-      </ThemeProvider>
+      </ThemeSwitcher>
     </MsalProvider>
   </React.StrictMode>,
   document.getElementById("root")
