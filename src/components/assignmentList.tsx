@@ -1,7 +1,5 @@
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList } from "react-window";
-
 import { List, ListItemButton, ListItemText } from "@mui/material";
+
 import type { AssignmentListItem, CurrentAssignment } from "../utils/types";
 
 function AssignmentList({

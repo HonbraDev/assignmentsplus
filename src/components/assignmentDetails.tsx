@@ -1,3 +1,5 @@
+import client from "../utils/graphClient";
+
 import {
   Box,
   CircularProgress,
@@ -8,7 +10,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import client from "../utils/graphClient";
+
 import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
 
 function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
