@@ -1,14 +1,6 @@
 import client from "../utils/graphClient";
 
-import {
-  Box,
-  CircularProgress,
-  Grid,
-  List,
-  Typography,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
@@ -43,11 +35,17 @@ function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
           <>
             <Typography variant="h5">{assignment.displayName}</Typography>
             <Typography variant="body1">
-              Due {new Date(assignment.dueDateTime!).toLocaleString()} - Closes{" "}
-              {new Date(assignment.closeDateTime!).toLocaleString()}
+              Due {new Date(assignment.dueDateTime!).toLocaleString()}
+              {assignment.closeDateTime && (
+                <>
+                  {" "}
+                  - Closes{" "}
+                  {new Date(assignment.closeDateTime!).toLocaleString()}
+                </>
+              )}
             </Typography>
 
-            <Grid container>
+            <Grid container spacing={2}>
               <Grid
                 item
                 xs={6}
@@ -70,27 +68,26 @@ function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
                   )}
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                }}
-              >
-                <Typography variant="h6">Files</Typography>
-                <List>
-                  {assignment.resources!.map((resource) => (
-                    <ListItemButton
-                      onClick={() => window.open(assignment.webUrl!)}
-                      key={resource.id}
-                    >
-                      <ListItemText primary={resource.resource!.displayName} />
-                    </ListItemButton>
-                  ))}
-                </List>
-              </Grid>
+              {(assignment.resources || []).length > 0 && (
+                <Grid
+                  item
+                  xs={6}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                  }}
+                >
+                  <Typography variant="h6">Files</Typography>
+                  <ul>
+                    {assignment.resources!.map((resource) => (
+                      <li key={resource.id}>
+                        {resource.resource!.displayName}
+                      </li>
+                    ))}
+                  </ul>
+                </Grid>
+              )}
             </Grid>
           </>
         ) : (

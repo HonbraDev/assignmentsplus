@@ -11,9 +11,6 @@ function useAssignmentList() {
   >({
     working: [],
     submitted: [],
-    returned: [],
-    released: [],
-    reassigned: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -26,48 +23,46 @@ function useAssignmentList() {
       )
       .get();
     const all = response.value as EducationAssignment[];
-    const working: AssignmentListItem[] = [];
-    const submitted: AssignmentListItem[] = [];
-    const returned: AssignmentListItem[] = [];
-    const released: AssignmentListItem[] = [];
-    const reassigned: AssignmentListItem[] = [];
+    let working: AssignmentListItem[] = [];
+    let submitted: AssignmentListItem[] = [];
     const fourMonthsAgo = Date.now() - 10368000000;
-    all
-      .sort((a, b) => Date.parse(a.dueDateTime!) - Date.parse(b.dueDateTime!))
-      .forEach((assignment) => {
-        const listItem = {
-          id: assignment.id!,
-          classId: assignment.classId!,
-          displayName: assignment.displayName!,
-          dateString: assignment.dueDateTime!.toLocaleString(),
-        };
-        if (Date.parse(assignment.dueDateTime!) < fourMonthsAgo) return;
-        switch (assignment.submissions![0].status!) {
-          case "working":
-            working.push(listItem);
-            break;
-          case "submitted":
-            submitted.push(listItem);
-            break;
-          case "returned":
-            returned.push(listItem);
-            break;
-          case "released":
-            released.push(listItem);
-            break;
-          case "reassigned":
-            reassigned.push(listItem);
-            break;
-          default:
-            break;
-        }
-      });
+    all.forEach((assignment) => {
+      const listItem = {
+        id: assignment.id!,
+        classId: assignment.classId!,
+        displayName: assignment.displayName!,
+        dateString: new Date(assignment.dueDateTime!).toLocaleString(),
+        due: Date.parse(assignment.dueDateTime!),
+        submitted: assignment.submissions![0].submittedDateTime
+          ? Date.parse(assignment.submissions![0].submittedDateTime)
+          : undefined,
+        returned: assignment.submissions![0].status === "returned",
+        reassigned: assignment.submissions![0].status === "reassigned",
+        status: assignment.submissions![0].status,
+      };
+      if (Date.parse(assignment.dueDateTime!) < fourMonthsAgo) return;
+      switch (assignment.submissions![0].status!) {
+        case "working":
+          working.push(listItem);
+          break;
+        case "reassigned":
+          working.push(listItem);
+          break;
+        case "submitted":
+          submitted.push(listItem);
+          break;
+        case "returned":
+          submitted.push(listItem);
+
+        default:
+          break;
+      }
+    });
+    working = working.sort((a, b) => a.due - b.due);
+    submitted = submitted.sort((a, b) => a.submitted! - b.submitted!);
     setAssignments({
       working,
       submitted,
-      returned,
-      released,
-      reassigned,
     });
     setLoading(false);
   };

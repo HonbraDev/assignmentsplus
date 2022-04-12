@@ -42,21 +42,13 @@ function AssignmentSidebar({
           <Tabs
             value={filter}
             onChange={(_event, newFilter) => setFilter(newFilter)}
+            variant="fullWidth"
           >
-            {assignments["working"].length > 0 && (
+            {assignments.working.length > 0 && (
               <Tab label="Assigned" value="working" />
             )}
-            {assignments["submitted"].length > 0 && (
+            {assignments.submitted.length > 0 && (
               <Tab label="Submitted" value="submitted" />
-            )}
-            {assignments["returned"].length > 0 && (
-              <Tab label="Returned" value="returned" />
-            )}
-            {assignments["released"].length > 0 && (
-              <Tab label="Released" value="released" />
-            )}
-            {assignments["reassigned"].length > 0 && (
-              <Tab label="Reassigned" value="reassigned" />
             )}
           </Tabs>
           <Divider />
