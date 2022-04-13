@@ -20,11 +20,9 @@ function AssignmentList({
   selectedId: string | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
 }) {
-  const today = new Date().getTime();
   return (
     <List disablePadding>
       {assignments.map((assignment) => {
-        if (assignment.reassigned) console.log(assignment);
         return (
           <ListItemButton
             key={assignment.id}
@@ -46,51 +44,29 @@ function AssignmentList({
             >
               <Typography variant="body1">{assignment.displayName}</Typography>
               <Typography variant="body2" color="text.secondary">
-                {assignment.dateString}
+                {assignment.dueDateString}
               </Typography>
+            </Box>
+            {assignment.showTags && (
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "row",
                   gap: 0.5,
+                  width: "100%",
+                  my: 1,
                 }}
               >
-                {assignment.due < today &&
-                  (assignment.status === "working" ||
-                    assignment.status === "reassigned") && (
-                    <Chip
-                      variant="outlined"
-                      size="small"
-                      label="Past due"
-                      sx={{ marginTop: 0.5 }}
-                    />
-                  )}
-                {assignment.returned && (
+                {assignment.tags!.map((tag) => (
                   <Chip
-                    variant="outlined"
+                    key={tag.label}
+                    label={tag.label}
+                    icon={<tag.icon />}
                     size="small"
-                    label="Returned"
-                    sx={{ marginTop: 0.5 }}
-                  />
-                )}
-                {assignment.submitted && (
-                  <Chip
                     variant="outlined"
-                    size="small"
-                    label="Submitted"
-                    sx={{ marginTop: 0.5 }}
                   />
-                )}
-                {assignment.reassigned && (
-                  <Chip
-                    variant="outlined"
-                    size="small"
-                    label="Reassigned"
-                    sx={{ marginTop: 0.5 }}
-                  />
-                )}
+                ))}
               </Box>
-            </Box>
+            )}
           </ListItemButton>
         );
       })}
