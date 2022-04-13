@@ -1,13 +1,5 @@
-import {
-  Box,
-  ButtonBase,
-  Card,
-  Chip,
-  List,
-  ListItemButton,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, List, ListItemButton, Typography } from "@mui/material";
+import { Virtuoso } from "react-virtuoso";
 
 import type { AssignmentListItem, CurrentAssignment } from "../utils/types";
 
@@ -21,8 +13,10 @@ function AssignmentList({
   onSelect: (assignment: CurrentAssignment) => void;
 }) {
   return (
-    <List disablePadding>
-      {assignments.map((assignment) => {
+    <Virtuoso
+      totalCount={assignments.length}
+      itemContent={(index) => {
+        const assignment = assignments[index];
         return (
           <ListItemButton
             key={assignment.id}
@@ -69,8 +63,8 @@ function AssignmentList({
             )}
           </ListItemButton>
         );
-      })}
-    </List>
+      }}
+    />
   );
 }
 

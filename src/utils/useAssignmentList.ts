@@ -84,8 +84,6 @@ function parseAssignments(assignments: EducationAssignment[]) {
       (a.submittedDateInt || a.returnedDateInt!)
   );
 
-  console.log(lists.working.filter((a) => a.showTags).map((a) => a.id));
-
   return lists;
 }
 
