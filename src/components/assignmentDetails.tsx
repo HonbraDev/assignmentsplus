@@ -1,4 +1,4 @@
-import client from "../utils/graphClient";
+import client from "@utils/graphClient";
 
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";

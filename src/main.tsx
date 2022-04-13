@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import theme from "./utils/theme";
 import ThemeSwitcher from "./components/themeSwitcher";
+import theme from "@config/theme";
 
 import { CssBaseline } from "@mui/material";
 import { EventType, PublicClientApplication } from "@azure/msal-browser";
-import { msalConfig } from "./utils/authConfig";
+import { msalConfig } from "@config/authConfig";
 import { MsalProvider } from "@azure/msal-react";
 
 export const msalInstance = new PublicClientApplication(msalConfig);

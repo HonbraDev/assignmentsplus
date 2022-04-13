@@ -3,7 +3,7 @@ import {
   AuthenticationProvider,
 } from "@microsoft/microsoft-graph-client";
 import { msalInstance } from "../main";
-import { loginRequest } from "./authConfig";
+import { loginRequest } from "@config/authConfig";
 
 class CustomProvider implements AuthenticationProvider {
   public async getAccessToken(): Promise<string> {

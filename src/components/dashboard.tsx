@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Box, Toolbar, Typography, IconButton, Container } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 
-import type { CurrentAssignment } from "../utils/types";
+import type { CurrentAssignment } from "@utils/types";
 
 function Dashboard() {
   const [currentAssignment, setCurrentAssignment] =

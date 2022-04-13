@@ -4,8 +4,9 @@ import {
   UnauthenticatedTemplate,
   useMsal,
 } from "@azure/msal-react";
-import { loginRequest } from "./utils/authConfig";
+import { loginRequest } from "@config/authConfig";
 import Dashboard from "./components/dashboard";
+import { useEffect } from "react";
 
 function App() {
   const { instance } = useMsal();

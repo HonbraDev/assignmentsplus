@@ -1,10 +1,10 @@
-import useAssignmentList from "../utils/useAssignmentList";
+import useAssignmentList from "@hooks/useAssignmentList";
 import AssignmentList from "./assignmentList";
 
 import { CircularProgress, Box, Tabs, Tab, Card, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import type { AssignmentFilter, CurrentAssignment } from "../utils/types";
+import type { AssignmentFilter, CurrentAssignment } from "@utils/types";
 
 function AssignmentSidebar({
   selected,

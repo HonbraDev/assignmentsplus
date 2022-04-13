@@ -1,7 +1,7 @@
-import { Box, Chip, List, ListItemButton, Typography } from "@mui/material";
+import { Box, Chip, ListItemButton, Typography } from "@mui/material";
 import { Virtuoso } from "react-virtuoso";
 
-import type { AssignmentListItem, CurrentAssignment } from "../utils/types";
+import type { AssignmentListItem, CurrentAssignment } from "@utils/types";
 
 function AssignmentList({
   assignments,

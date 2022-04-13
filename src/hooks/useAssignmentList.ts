@@ -1,14 +1,14 @@
-import client from "./graphClient";
-
-import { useEffect, useState } from "react";
-
-import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
-import type { AssignmentFilter, AssignmentListItem } from "./types";
+import client from "@utils/graphClient";
 
 import {
   Reply as ReplyIcon,
   RunningWithErrors as RunningWithErrorsIcon,
 } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { PageIterator } from "@microsoft/microsoft-graph-client";
+
+import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
+import type { AssignmentFilter, AssignmentListItem } from "@utils/types";
 
 const ignoredIds = [
   "5e93b18f-bd3e-4fe7-85df-cbdac5b3e168",
@@ -47,10 +47,18 @@ function useAssignmentList() {
         "/education/me/assignments?$expand=submissions&$orderby=dueDateTime desc&$top=1000"
       )
       .get();
-    const all = response.value as EducationAssignment[];
-    console.time("parseAssignments");
-    const parsed = parseAssignments(all);
-    console.timeEnd("parseAssignments");
+
+    const assignments: EducationAssignment[] = [];
+
+    const iterator = new PageIterator(client, response, (data) =>
+      Boolean(assignments.push(data))
+    );
+
+    await iterator.iterate();
+
+    console.time("Parse assignments");
+    const parsed = parseAssignments(assignments);
+    console.timeEnd("Parse assignments");
     setAssignments(parsed);
     setLoading(false);
   };
