@@ -44,7 +44,7 @@ function AssignmentListRow({
             display: "flex",
             gap: 0.5,
             width: "100%",
-            my: 1,
+            mt: 1,
           }}
         >
           {assignment.tags!.map((tag) => (
