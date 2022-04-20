@@ -1,8 +1,14 @@
 import useAssignmentList from "@hooks/useAssignmentList";
 import AssignmentList from "./assignmentList";
+import SidebarTab from "./sidebarTab";
+import SidebarTabs from "./sidebarTabs";
 
-import { CircularProgress, Box, Tabs, Tab, Card, Divider } from "@mui/material";
+import { CircularProgress, Box, Card } from "@mui/material";
 import { useEffect, useState } from "react";
+import {
+  InboxOutlined as InboxIcon,
+  Done as DoneIcon,
+} from "@mui/icons-material";
 
 import type { AssignmentFilter, CurrentAssignment } from "@utils/types";
 
@@ -39,19 +45,23 @@ function AssignmentSidebar({
             height: "100%",
           }}
         >
-          <Tabs
-            value={filter}
-            onChange={(_event, newFilter) => setFilter(newFilter)}
-            variant="fullWidth"
-          >
-            {assignments.working.length > 0 && (
-              <Tab label="Assigned" value="working" />
-            )}
-            {assignments.submitted.length > 0 && (
-              <Tab label="Submitted" value="submitted" />
-            )}
-          </Tabs>
-          <Divider />
+          <SidebarTabs
+            loading={loading}
+            filter={filter}
+            setFilter={(_, filter) => setFilter(filter)}
+            tabs={[
+              {
+                label: "Assigned",
+                icon: <InboxIcon />,
+                value: "working",
+              },
+              {
+                label: "Submitted",
+                icon: <DoneIcon />,
+                value: "submitted",
+              },
+            ]}
+          />
           {loading ? (
             <Box
               sx={{

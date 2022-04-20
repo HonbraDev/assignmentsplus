@@ -42,7 +42,7 @@ function Login() {
               Only internal accounts from the mensagym tenant are currently
               supported due to API restrictions.
             </Typography>
-          </Box>{" "}
+          </Box>
           <Button
             variant="contained"
             onClick={() => instance.loginPopup(loginRequest)}

@@ -4,7 +4,7 @@ import type { EducationSubmissionStatus } from "@microsoft/microsoft-graph-types
 
 export type AssignmentFilter = "working" | "submitted";
 
-export type AssignmentListItem = {
+export interface AssignmentListItem {
   list: AssignmentFilter;
   id: string;
   classId: string;
@@ -22,9 +22,15 @@ export type AssignmentListItem = {
   }[];
   showTags: boolean;
   submittedDateInt?: number;
-};
+}
 
-export type CurrentAssignment = {
+export interface CurrentAssignment {
   id: string;
   classId: string;
-};
+}
+
+export interface AssignmentTabProps {
+  label: string;
+  value: AssignmentFilter;
+  icon: React.ReactElement;
+}

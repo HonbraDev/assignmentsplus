@@ -1,8 +1,8 @@
 import client from "@utils/graphClient";
 
 import {
-  Reply as ReplyIcon,
-  RunningWithErrors as RunningWithErrorsIcon,
+  ReplyOutlined as ReplyIcon,
+  RunningWithErrorsOutlined as RunningWithErrorsIcon,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { PageIterator } from "@microsoft/microsoft-graph-client";

@@ -3,7 +3,7 @@ import AssignmentDetails from "./assignmentDetails";
 
 import { useState } from "react";
 import { Box, Toolbar, Typography, IconButton, Container } from "@mui/material";
-import { MoreVert } from "@mui/icons-material";
+import { MoreVertOutlined as MoreVertIcon } from "@mui/icons-material";
 
 import type { CurrentAssignment } from "@utils/types";
 
@@ -28,7 +28,7 @@ function Dashboard() {
           <Typography variant="h6">Assignments+</Typography>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton aria-label="options">
-            <MoreVert />
+            <MoreVertIcon />
           </IconButton>
         </Toolbar>
         <Box
