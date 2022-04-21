@@ -1,45 +1,78 @@
 import client from "@utils/graphClient";
+import useLocalStorage from "@hooks/useLocalStorage";
 
 import {
   ReplyOutlined as ReplyIcon,
   RunningWithErrorsOutlined as RunningWithErrorsIcon,
 } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PageIterator } from "@microsoft/microsoft-graph-client";
 
 import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
-import type { AssignmentFilter, AssignmentListItem } from "@utils/types";
-
-const ignoredIds = [
-  "5e93b18f-bd3e-4fe7-85df-cbdac5b3e168",
-  "298e5edf-6814-42b9-b048-3a4312a94689",
-  "3cb57e19-8f4c-4885-adf8-1271f729f458",
-  "8947b886-f1f0-42b8-9acb-0671c374c707",
-  "0099e0c9-a756-467b-9da6-7fc9c150ef91",
-  "3d6b473e-c5ea-4b76-94cb-128becb325da",
-  "a5057d0e-1c8d-4748-9c10-c296098ae619",
-  "e8d7273e-5f32-48ac-b03a-43738d8b101a",
-  "325cdcdb-5dc8-487a-9e4e-27e6695be250",
-  "e2d53ce5-1909-4fda-a340-2ad87ab1d42b",
-  "6251b366-fb3c-46ff-bf3b-a2b90b7ea616",
-  "f1903eb7-7acd-4c94-bc3b-3cf82d56e97b",
-  "39d303f2-ec9e-47d6-b7f3-9fdbd59512da",
-  "dc208f0a-dae3-4d53-a117-35f87368fbff",
-  "64f17091-7d2e-43ba-89a0-f37de6760e4c",
-  "14cebb55-b015-4684-9121-236d7bb781e5",
-  "022e3bf2-1538-4f68-b841-7d2cd5688837",
-];
+import type {
+  AssignmentFilter,
+  AssignmentListItem,
+  AssignmentList,
+} from "@utils/types";
 
 function useAssignmentList() {
-  const [assignments, setAssignments] = useState<
-    Record<AssignmentFilter, AssignmentListItem[]>
-  >({
+  const [assignments, setAssignments] = useState<AssignmentList>({
     working: [],
     submitted: [],
   });
+  const [ignoredIds, setIgnoredIds] = useLocalStorage<string[]>(
+    "ignoredIds",
+    []
+  );
   const [loading, setLoading] = useState(true);
 
-  const fetchAssignments = async () => {
+  const fetchAssignments = assignmentFetcher(
+    setLoading,
+    setAssignments,
+    ignoredIds
+  );
+  const sortAssignments = assignmentFilterer(
+    assignments,
+    setAssignments,
+    ignoredIds
+  );
+  const ignore = (id: string) => {
+    setIgnoredIds((ids) => [...ids, id]);
+    sortAssignments(id);
+  };
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  return { assignments, loading, refetch: fetchAssignments, ignore };
+}
+
+export default useAssignmentList;
+
+function assignmentFilterer(
+  assignments: AssignmentList,
+  setAssignments: Dispatch<SetStateAction<AssignmentList>>,
+  ignoredIds: string[]
+) {
+  return (newId?: string) => {
+    if (newId) ignoredIds.push(newId);
+    const filtered = {
+      working: assignments.working.filter((a) => !ignoredIds.includes(a.id)),
+      submitted: assignments.submitted.filter(
+        (a) => !ignoredIds.includes(a.id)
+      ),
+    };
+    setAssignments(filtered);
+  };
+}
+
+function assignmentFetcher(
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  setAssignments: Dispatch<SetStateAction<AssignmentList>>,
+  ignoredIds: string[]
+) {
+  return async () => {
     setLoading(true);
     setLoading(true);
     const response = await client
@@ -57,22 +90,17 @@ function useAssignmentList() {
     await iterator.iterate();
 
     console.time("Parse assignments");
-    const parsed = parseAssignments(assignments);
+    const parsed = parseAssignments(assignments, ignoredIds);
     console.timeEnd("Parse assignments");
     setAssignments(parsed);
     setLoading(false);
   };
-
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
-
-  return { assignments, loading, refetch: fetchAssignments };
 }
 
-export default useAssignmentList;
-
-function parseAssignments(assignments: EducationAssignment[]) {
+function parseAssignments(
+  assignments: EducationAssignment[],
+  ignoredIds: string[]
+) {
   const lists: Record<AssignmentFilter, AssignmentListItem[]> = {
     working: [],
     submitted: [],
@@ -154,6 +182,7 @@ function parseAssignment(
     tags,
     showTags,
     submittedDateInt,
+    url: assignment.webUrl!,
   };
 }
 

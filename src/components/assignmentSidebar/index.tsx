@@ -1,6 +1,5 @@
 import useAssignmentList from "@hooks/useAssignmentList";
 import AssignmentList from "./assignmentList";
-import SidebarTab from "./sidebarTab";
 import SidebarTabs from "./sidebarTabs";
 
 import { CircularProgress, Box, Card } from "@mui/material";
@@ -19,7 +18,7 @@ function AssignmentSidebar({
   selected: CurrentAssignment | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
 }) {
-  const { assignments, loading } = useAssignmentList();
+  const { assignments, loading, ignore: onIgnore } = useAssignmentList();
   const [filter, setFilter] = useState<AssignmentFilter>("working");
 
   useEffect(() => {
@@ -83,6 +82,7 @@ function AssignmentSidebar({
                 assignments={assignments[filter]}
                 selectedId={selected?.id}
                 onSelect={onSelect}
+                onIgnore={onIgnore}
               />
             </Box>
           )}

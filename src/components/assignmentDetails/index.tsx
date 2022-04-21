@@ -7,13 +7,15 @@ import type { EducationAssignment } from "@microsoft/microsoft-graph-types";
 
 function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
   const [assignment, setAssignment] = useState<EducationAssignment>();
+  const [loading, setLoading] = useState(false);
 
   const getAssignment = async () => {
-    setAssignment(undefined);
+    setLoading(true);
     const response = await client
       .api(`/education/classes/${classId}/assignments/${id}?$expand=*`)
       .get();
     setAssignment(response);
+    setLoading(false);
     console.log("Assignment details", response);
   };
 
@@ -31,7 +33,17 @@ function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
           width: "100%",
         }}
       >
-        {assignment !== undefined ? (
+        {loading ? (
+          <Box
+            sx={{
+              pt: 4,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : assignment ? (
           <>
             <Typography variant="h5">{assignment.displayName}</Typography>
             <Typography variant="body1">
@@ -91,15 +103,7 @@ function AssignmentDetails({ classId, id }: { classId: string; id: string }) {
             </Grid>
           </>
         ) : (
-          <Box
-            sx={{
-              pt: 4,
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress />
-          </Box>
+          <>This shouldn't happen</>
         )}
       </Box>
     </>

@@ -9,10 +9,12 @@ function AssignmentList({
   assignments,
   selectedId,
   onSelect,
+  onIgnore,
 }: {
   assignments: AssignmentListItem[];
   selectedId: string | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
+  onIgnore: (id: string) => void;
 }) {
   return (
     <Box
@@ -29,6 +31,7 @@ function AssignmentList({
               assignment={assignments[index]}
               selectedId={selectedId}
               onSelect={onSelect}
+              onIgnore={onIgnore}
             />
           ) : (
             <Box

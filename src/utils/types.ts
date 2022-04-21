@@ -22,6 +22,7 @@ export interface AssignmentListItem {
   }[];
   showTags: boolean;
   submittedDateInt?: number;
+  url: string;
 }
 
 export interface CurrentAssignment {
@@ -34,3 +35,5 @@ export interface AssignmentTabProps {
   value: AssignmentFilter;
   icon: React.ReactElement;
 }
+
+export type AssignmentList = Record<AssignmentFilter, AssignmentListItem[]>;
