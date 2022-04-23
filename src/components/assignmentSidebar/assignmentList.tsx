@@ -1,6 +1,6 @@
 import AssignmentListRow from "./assignmentListRow";
 
-import { Box, List } from "@mui/material";
+import { Box } from "@mui/material";
 import { Virtuoso } from "react-virtuoso";
 
 import type { AssignmentListItem, CurrentAssignment } from "@utils/types";
@@ -20,7 +20,7 @@ function AssignmentList({
     <Box
       sx={{
         height: "100%",
-        py: 1,
+        pt: 1,
       }}
     >
       <Virtuoso
@@ -31,13 +31,8 @@ function AssignmentList({
             selectedId={selectedId}
             onSelect={onSelect}
             onIgnore={onIgnore}
-            isFirst={index === 0}
           />
         )}
-        components={{
-          // @ts-ignore
-          List,
-        }}
       />
     </Box>
   );

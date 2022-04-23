@@ -24,13 +24,11 @@ function AssignmentListRow({
   selectedId,
   onSelect,
   onIgnore,
-  isFirst,
 }: {
   assignment: AssignmentListItem;
   selectedId: string | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
   onIgnore: (id: string) => void;
-  isFirst: boolean;
 }) {
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
@@ -64,7 +62,7 @@ function AssignmentListRow({
           sx={{
             flexDirection: "column",
             mx: 1,
-            mt: isFirst ? 0 : 1,
+            mb: 1,
             borderRadius: 1,
           }}
         >
