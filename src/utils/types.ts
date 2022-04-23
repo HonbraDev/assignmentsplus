@@ -1,6 +1,6 @@
-import { AssignmentTurnedIn as AssignmentTurnedInIcon } from "@mui/icons-material";
-
+import type { AssignmentTurnedIn as AssignmentTurnedInIcon } from "@mui/icons-material";
 import type { EducationSubmissionStatus } from "@microsoft/microsoft-graph-types";
+import type { Dispatch, SetStateAction } from "react";
 
 export type AssignmentFilter = "working" | "submitted";
 
@@ -37,3 +37,5 @@ export interface AssignmentTabProps {
 }
 
 export type AssignmentList = Record<AssignmentFilter, AssignmentListItem[]>;
+
+export type SetState<T> = Dispatch<SetStateAction<T>>;

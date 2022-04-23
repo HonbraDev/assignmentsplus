@@ -18,8 +18,18 @@ function AssignmentSidebar({
   selected: CurrentAssignment | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
 }) {
-  const { assignments, loading, ignore: onIgnore } = useAssignmentList();
+  const {
+    data: assignments,
+    loading,
+    error,
+    ignore,
+    fetch: fetchAssignments,
+  } = useAssignmentList();
   const [filter, setFilter] = useState<AssignmentFilter>("working");
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   useEffect(() => {
     if (selected) return;
@@ -61,7 +71,7 @@ function AssignmentSidebar({
               },
             ]}
           />
-          {loading ? (
+          {loading && (
             <Box
               sx={{
                 pt: 4,
@@ -71,7 +81,19 @@ function AssignmentSidebar({
             >
               <CircularProgress />
             </Box>
-          ) : (
+          )}
+          {error && (
+            <Box
+              sx={{
+                pt: 4,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <p>Error fetching assignments</p>
+            </Box>
+          )}
+          {!loading && !error && (
             <Box
               sx={{
                 flexGrow: 1,
@@ -82,7 +104,7 @@ function AssignmentSidebar({
                 assignments={assignments[filter]}
                 selectedId={selected?.id}
                 onSelect={onSelect}
-                onIgnore={onIgnore}
+                onIgnore={ignore}
               />
             </Box>
           )}
