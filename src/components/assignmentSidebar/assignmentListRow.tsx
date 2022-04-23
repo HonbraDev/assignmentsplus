@@ -9,6 +9,7 @@ import {
   MenuItem,
   ListItemText,
   ListItemIcon,
+  ListItem,
 } from "@mui/material";
 import { useState } from "react";
 import {
@@ -23,11 +24,13 @@ function AssignmentListRow({
   selectedId,
   onSelect,
   onIgnore,
+  isFirst,
 }: {
   assignment: AssignmentListItem;
   selectedId: string | undefined;
   onSelect: (assignment: CurrentAssignment) => void;
   onIgnore: (id: string) => void;
+  isFirst: boolean;
 }) {
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
@@ -50,57 +53,59 @@ function AssignmentListRow({
 
   return (
     <>
-      <ListItemButton
-        key={assignment.id}
-        selected={assignment.id === selectedId}
-        onContextMenu={handleContextMenu}
-        onClick={() =>
-          onSelect({ id: assignment.id, classId: assignment.classId })
-        }
-        sx={{
-          flexDirection: "column",
-          mb: 1,
-          mx: 1,
-          borderRadius: 1,
-        }}
-      >
-        <Box
+      <ListItem disablePadding>
+        <ListItemButton
+          key={assignment.id}
+          selected={assignment.id === selectedId}
+          onContextMenu={handleContextMenu}
+          onClick={() =>
+            onSelect({ id: assignment.id, classId: assignment.classId })
+          }
           sx={{
-            width: "100%",
-            display: "flex",
             flexDirection: "column",
-            gap: 0.5,
+            mx: 1,
+            mt: isFirst ? 0 : 1,
+            borderRadius: 1,
           }}
         >
-          <Typography variant="body1">{assignment.displayName}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {assignment.dueDateString}
-          </Typography>
-        </Box>
-        {assignment.showTags && (
           <Box
             sx={{
-              display: "flex",
-              gap: 0.5,
               width: "100%",
-              mt: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 0.5,
             }}
           >
-            {assignment.tags!.map((tag) => (
-              <Chip
-                key={tag.label}
-                label={tag.label}
-                icon={<tag.icon />}
-                size="small"
-                variant="outlined"
-                sx={{
-                  cursor: "inherit",
-                }}
-              />
-            ))}
+            <Typography variant="body1">{assignment.displayName}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {assignment.dueDateString}
+            </Typography>
           </Box>
-        )}
-      </ListItemButton>
+          {assignment.showTags && (
+            <Box
+              sx={{
+                display: "flex",
+                gap: 0.5,
+                width: "100%",
+                mt: 1,
+              }}
+            >
+              {assignment.tags!.map((tag) => (
+                <Chip
+                  key={tag.label}
+                  label={tag.label}
+                  icon={<tag.icon />}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    cursor: "inherit",
+                  }}
+                />
+              ))}
+            </Box>
+          )}
+        </ListItemButton>
+      </ListItem>
       <Menu
         open={contextMenu !== null}
         onClose={handleClose}
