@@ -20,7 +20,7 @@ function AssignmentList({
     <Box
       sx={{
         height: "100%",
-        pt: 1,
+        py: 1,
       }}
     >
       <Virtuoso
