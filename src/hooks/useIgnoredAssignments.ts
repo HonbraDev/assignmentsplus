@@ -1,7 +1,10 @@
-import { useState } from "react";
+import useLocalStorage from "./useLocalStorage";
 
-function useIgnoredAssignments(initialValues?: string[]) {
-  const [ignoredIds, setIgnoredIds] = useState(initialValues || []);
+function useIgnoredAssignments() {
+  const [ignoredIds, setIgnoredIds] = useLocalStorage<string[]>(
+    "ignoredIds",
+    []
+  );
 
   const add = (id: string) => {
     if (ignoredIds.includes(id)) return false;
