@@ -45,7 +45,11 @@ function Login() {
           </Box>
           <Button
             variant="contained"
-            onClick={() => window.safari !== undefined ? instance.loginRedirect(loginRequest) : instance.loginPopup(loginRequest)}
+            onClick={() =>
+              (window as any).safari !== undefined
+                ? instance.loginRedirect(loginRequest)
+                : instance.loginPopup(loginRequest)
+            }
             sx={{
               marginLeft: "auto",
               display: "block",
